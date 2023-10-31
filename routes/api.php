@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,15 @@ Route::prefix('v1')->group(function () {
         ->controller(AccountController::class)
         ->group(function () {
             Route::post('/update','update');
+        });
+
+        /**
+         * Config Account
+         */
+        Route::prefix('/product')
+        ->controller(ProductController::class)
+        ->group(function () {
+            Route::get('/','index');
         });
     });
 });
