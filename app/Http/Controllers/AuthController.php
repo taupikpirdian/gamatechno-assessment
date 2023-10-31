@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Repositories\Interfaces\AccountRepositoryInterface;
 
 class AuthController extends Controller
 {
+    private $accountRepository;
+
+    public function __construct(AccountRepositoryInterface $accountRepository) {
+        $this->accountRepository = $accountRepository;
+    }
+    
     /**
      * register
      */
@@ -21,13 +28,21 @@ class AuthController extends Controller
         
         DB::beginTransaction();
         try {
-            $user = User::create([
-                'name' => request()->name,
-                'email' => request()->email,
-                'password' => Hash::make(request()->password),
-            ]);
+            $user = $this->accountRepository->createUser(
+                [
+                    'name' => request()->name,
+                    'email' => request()->email,
+                    'password' => request()->password
+                ]
+            );
             $user->assignRole('customer');
 
+            $this->accountRepository->createCustomer(
+                [
+                    'user_id' => $user->id,
+                    'name' => request()->name
+                ]
+            );
             DB::commit();
             return $this->success('Akun Berhasil Dibuat');
         }catch (\Exception $e) {
