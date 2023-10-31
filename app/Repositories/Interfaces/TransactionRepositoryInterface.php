@@ -2,8 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
-interface ProductRepositoryInterface
+interface TransactionRepositoryInterface
 {
     public function listData();
-    public function findById($id);
 }

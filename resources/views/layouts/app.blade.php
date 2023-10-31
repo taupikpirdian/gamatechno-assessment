@@ -48,7 +48,6 @@
     @include('component.footer') 
     
     @include('component.script')
-    @include('component.active_menu')
 
     @stack('before-scripts')
     @stack('after-scripts')

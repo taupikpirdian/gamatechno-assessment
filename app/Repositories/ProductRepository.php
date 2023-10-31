@@ -18,5 +18,9 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return $this->model::orderBy('name', 'asc')->paginate(25);
     }
-  
+
+    public function findById($id)
+    {   
+        return $this->model::where('id', $id)->first();
+    }
 }
