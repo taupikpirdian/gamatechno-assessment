@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AccountRequest;
-use Illuminate\Support\Facades\Validator;
 use App\Repositories\Interfaces\AccountRepositoryInterface;
+use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {

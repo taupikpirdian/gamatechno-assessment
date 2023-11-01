@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use App\Repositories\Interfaces\AccountRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthController extends Controller
     public function __construct(AccountRepositoryInterface $accountRepository) {
         $this->accountRepository = $accountRepository;
     }
-    
+
     /**
      * register
      */
@@ -25,7 +26,7 @@ class AuthController extends Controller
         $rules = (new UserRequest())->rules();
         $validator = Validator::make(request()->all(), $rules);
         if ($validator->fails()) return $this->error(400, parent::setMessageValidationError($validator), true);
-        
+
         DB::beginTransaction();
         try {
             $user = $this->accountRepository->createUser(
