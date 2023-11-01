@@ -18,5 +18,9 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return $this->model::orderBy('name', 'asc')->paginate(25);
     }
-  
+
+    public function store($payload)
+    {
+        return $this->model::create($payload);
+    }
 }

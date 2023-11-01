@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -38,6 +39,11 @@ class UserTableSeeder extends Seeder
                 ]
             );
             $user->assignRole($data['role']);
+
+            Customer::create([
+                'user_id' => $user->id,
+                'name' => $user->name
+            ]);
         }
 
         echo "End UserTableSeeder, seeder selesai ... ";

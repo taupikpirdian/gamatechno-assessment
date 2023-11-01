@@ -9,4 +9,5 @@ interface AccountRepositoryInterface
     public function createUser($payload);
     public function createCustomer($payload);
     public function updateCustomer($payload);
+    public function listCustomer();
 }

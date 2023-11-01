@@ -34,7 +34,7 @@ class AccountRepository implements AccountRepositoryInterface
             $customer->address = $payload['address'];
             $customer->phone = $payload['phone'];
             $customer->update();
-            
+
             return ['is_updated' => true];
         }
 
@@ -76,5 +76,10 @@ class AccountRepository implements AccountRepositoryInterface
                 'phone' => isset($payload['phone']) ? $payload['phone'] : null
             ]
         );
+    }
+
+    public function listCustomer()
+    {
+        return $this->modelUser::role('customer')->get();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Interfaces\AccountRepositoryInterface;
 use App\Repositories\Interfaces\ProductRepositoryInterface;
 use App\Repositories\Interfaces\TransactionRepositoryInterface;
 use Illuminate\Http\Request;
@@ -12,16 +13,19 @@ class TransactionController extends Controller
     public $base_url;
     public $transactionRepository;
     public $productRepository;
+    public $accountRepository;
 
     public function __construct(
         TransactionRepositoryInterface $transactionRepository,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        AccountRepositoryInterface $accountRepository
     )
     {
         $this->title = "Transaction";
         $this->base_url = "/transaction";
         $this->transactionRepository = $transactionRepository;
         $this->productRepository = $productRepository;
+        $this->accountRepository = $accountRepository;
     }
 
     public function index()
@@ -40,7 +44,8 @@ class TransactionController extends Controller
             'title' => $this->title,
             'title_sub2' => "Create",
             'route_store' => "transaction.store",
-            'products' => $this->productRepository->listData()
+            'products' => $this->productRepository->listData(),
+            'customers' => $this->accountRepository->listCustomer(),
         ];
         return view('dashboard.transaction.create', $data);
     }
@@ -55,7 +60,6 @@ class TransactionController extends Controller
             $sub_total = $product->price;
             $cashback = $sub_total * $discount / 100;
             $total = $sub_total - $cashback;
-            
             return response()->json([
                 'success' => true,
                 'sub_total' => $sub_total,
@@ -71,6 +75,53 @@ class TransactionController extends Controller
             'percent_discount' => 0,
             'total' => 0,
             'cashback' => 0
+        ]);
+    }
+
+    public function store(Request $request){
+        $payment_user = (int) str_replace('.', '', $request->payment_user);
+        $product_id = $request->product;
+        $discount = $request->discount;
+        $date = $request->date;
+        $userId = $request->user_id;
+
+        $product = $this->productRepository->findById($product_id);
+        $customer = $this->accountRepository->findCustomerByUserId($userId);
+
+        if($product){
+            $sub_total = $product->price;
+            $cashback = $sub_total * $discount / 100;
+            $total = $sub_total - $cashback;
+
+            if ($total > $payment_user){
+                return response()->json([
+                    'success' => false,
+                    'message' => "Nominal Tidak Sesuai"
+                ]);
+            }
+
+            $dto = [
+                "customer_id" => $customer->id,
+                "user_id" => $userId,
+                "product_id" => $product_id,
+                "no_transaction" => generateNoTrx(),
+                "date" => convertDate($date),
+                "total_amount" => $total,
+                "discount" => $discount,
+                "total_payment" => $payment_user,
+                "cashback" => $cashback,
+            ];
+            $this->transactionRepository->store($dto);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Berhasil Simpan"
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => "Error"
         ]);
     }
 }
