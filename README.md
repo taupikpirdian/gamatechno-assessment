@@ -7,6 +7,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Tech Tools
+1. Sanctum
+2. Datepicker
+3. Laravel 10
+4. Jquery
+5. Bootstrap
+
 ## SchemaDb
 
 ![alt text](https://github.com/taupikpirdian/gamatechno-assessment/blob/master/designdb.png?raw=true)
