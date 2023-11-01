@@ -19,4 +19,14 @@ class Transaction extends Model
         'total_payment',
         'cashback',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo('App\Models\Customer', 'customer_id', 'id');
+    }
+
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product', 'product_id', 'id');
+    }
 }

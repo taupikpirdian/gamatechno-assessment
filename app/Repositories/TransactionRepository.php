@@ -16,11 +16,16 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function listData()
     {
-        return $this->model::orderBy('name', 'asc')->paginate(25);
+        return $this->model::orderBy('created_at', 'desc')->paginate(25);
     }
 
     public function store($payload)
     {
         return $this->model::create($payload);
+    }
+
+    public function detail($id)
+    {
+        return $this->model::where('id', $id)->first();
     }
 }

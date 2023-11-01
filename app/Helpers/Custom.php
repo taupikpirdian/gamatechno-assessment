@@ -33,3 +33,14 @@ function convertDate($date){
 
     return $formattedDate;
 }
+
+function convertDateDynamis($date, $formatFrom, $formatTo){
+    // Original date in mm/dd/yyyy format
+    $originalDate = "$date";
+    // Create a DateTime object from the original date
+    $dateTime = DateTime::createFromFormat($formatFrom, $originalDate);
+    // Format the DateTime object to the desired format (Y-m-d)
+    $formattedDate = $dateTime->format($formatTo);
+
+    return $formattedDate;
+}

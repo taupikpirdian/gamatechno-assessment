@@ -6,4 +6,5 @@ interface TransactionRepositoryInterface
 {
     public function listData();
     public function store($dto);
+    public function detail($id);
 }

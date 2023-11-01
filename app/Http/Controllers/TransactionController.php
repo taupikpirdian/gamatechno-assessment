@@ -33,8 +33,10 @@ class TransactionController extends Controller
         $data = [
             'title' => $this->title,
             'title_sub2' => "List",
-            'route_create' => "transaction.create"
+            'route_create' => "transaction.create",
+            'datas' => $this->transactionRepository->listData()
         ];
+
         return view('dashboard.transaction.index', $data);
     }
 
@@ -123,5 +125,16 @@ class TransactionController extends Controller
             'success' => false,
             'message' => "Error"
         ]);
+    }
+
+    public function show($id)
+    {
+        $data = [
+            'title' => $this->title,
+            'title_sub2' => "Detail",
+            'route_store' => "transaction.index",
+            'transaction' => $this->transactionRepository->detail($id),
+        ];
+        return view('dashboard.transaction.show', $data);
     }
 }

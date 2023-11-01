@@ -14,54 +14,49 @@
                 <table class="table table-borderless mb-0">
                     <tbody>
                         <tr>
-                            <th class="ps-0" scope="row">Title :</th>
-                            <td class="text-muted">{{$data->title}}</td>
+                            <th class="ps-0" scope="row">Nama Pelanggan :</th>
+                            <td class="text-muted">{{$transaction->customer->name}}</td>
                         </tr>
                         <tr>
-                            <th class="ps-0" scope="row">Highlight :</th>
-                            <td class="text-muted">{{$data->highlight}}</td>
+                            <th class="ps-0" scope="row">Nama Produk :</th>
+                            <td class="text-muted">{{$transaction->product->name}}</td>
                         </tr>
                         <tr>
-                            <th class="ps-0" scope="row">Status :</th>
-                            <td class="text-muted">
-                                @if($data->status == "active")
-                                    <span class="badge bg-success">Active</span>
-                                @else
-                                    <span class="badge bg-danger">Non Active</span>
-                                @endif
-                            </td>
+                            <th class="ps-0" scope="row">No Transaksi :</th>
+                            <td class="text-muted">{{$transaction->no_transaction}}</td>
                         </tr>
                         <tr>
-                            <th class="ps-0" scope="row">Image :</th>
-                            <td class="text-muted">
-                                <img src="{{ asset('storage/blog/' . $data->image) }}" alt="Image Alt Text" width="300">
-                            </td>
+                            <th class="ps-0" scope="row">Tanggal Transaksi :</th>
+                            <td class="text-muted">{{convertDateDynamis($transaction->date, 'Y-m-d', 'D, d M Y')}}</td>
                         </tr>
                         <tr>
-                            <th class="ps-0" scope="row">File Syarat Formil RJ Narkotika :</th>
-                            <td class="text-muted">
-                                <a class="btn btn-info" href="{!! route('blog.download', $data->file_syarat_formil_rj_narkotika) !!}"><i class="ri-file-download-line" aria-hidden="true"></i> Download</a>
-                            </td>
+                            <th class="ps-0" scope="row">Harga Produk :</th>
+                            <td class="text-muted">Rp. {{ number_format($transaction->product->price, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
-                            <th class="ps-0" scope="row">File Syarat Formil RJ Oharda/Kamneg :</th>
-                            <td class="text-muted">
-                                <a class="btn btn-info" href="{!! route('blog.download', $data->file_syarat_formil_rj_oharda) !!}"><i class="ri-file-download-line" aria-hidden="true"></i> Download</a>
-                            </td>
+                            <th class="ps-0" scope="row">Diskon(%) :</th>
+                            <td class="text-muted">{{$transaction->discount}}%</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-0" scope="row">Nominal Diskon :</th>
+                            <td class="text-muted">Rp. {{ number_format($transaction->cashback, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <th class="ps-0" scope="row">Total Pembayaran :</th>
+                            <td class="text-muted">Rp. {{ number_format($transaction->total_amount, 0, ',', '.') }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="ps-0" scope="row">Uang Masuk :</th>
+                            <td class="text-muted">Rp. {{ number_format($transaction->total_payment, 0, ',', '.') }}</td>
+                        </tr>
+
+                        <tr>
+                            <th class="ps-0" scope="row">Uang Kembali :</th>
+                            <td class="text-muted">Rp. {{ number_format(( $transaction->total_payment - $transaction->product->price) + $transaction->cashback, 0, ',', '.') }}</td>
                         </tr>
                     </tbody>
                 </table>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-4">
-                            <label class="form-label">Detail :</label>
-                        </div>
-                        <div class="col-8">
-                            {!! $data->desc !!}
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
